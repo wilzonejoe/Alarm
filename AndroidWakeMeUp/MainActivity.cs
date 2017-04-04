@@ -131,7 +131,6 @@ namespace AndroidWakeMeUp
             protected override void OnPreExecute()
             {
                 base.OnPreExecute();
-//                pd.Window.SetType(Android.Views.WindowManagerTypes.SystemAlert);
                 pd.SetTitle("Loading weather info .....");
                 pd.Show();
             }
