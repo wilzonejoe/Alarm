@@ -43,6 +43,7 @@
     <Compile Include="Configurations\ErrorMessage.cs" />
     <Compile Include="Entity\Time.cs" />
     <Compile Include="Entity\OpenWeather.cs" />
+    <Compile Include="Function\MainBasicFunction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Enumeration\TimeType.cs" />
   </ItemGroup>

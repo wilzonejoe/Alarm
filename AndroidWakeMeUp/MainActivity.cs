@@ -107,9 +107,7 @@ namespace AndroidWakeMeUp
             _currentDateInfoTextView.Text = currentDate;
             _currentTimeAmpmInfoTextView.Text = currentAmpm;
             _currentTimeInfoTextView.Text = currentTime;
-        }
-
-        
+        }   
 
         private class GetWeather : AsyncTask<string, Java.Lang.Void, OpenWeather>
         {
