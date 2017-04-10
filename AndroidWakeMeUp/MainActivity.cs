@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Graphics;
 using Android.Widget;
 using Android.OS;
 using CoreWakeMeUp.Configurations;
-using CoreWakeMeUp.Endpoint;
 using CoreWakeMeUp.Entity;
 using Java.IO;
 using Java.Lang;
@@ -27,6 +25,48 @@ namespace AndroidWakeMeUp
         private TextView _currentCityInfoTextView;
         private ImageView _currentWeatherInfoImageView;
 
+        public TextView CurrentTimeInfoTextView
+        {
+            get { return _currentTimeInfoTextView; }
+            set { _currentTimeInfoTextView = value; }
+        }
+
+        public TextView CurrentTimeAmpmInfoTextView
+        {
+            get { return _currentTimeAmpmInfoTextView; }
+            set { _currentTimeAmpmInfoTextView = value; }
+        }
+
+        public TextView CurrentDateInfoTextView
+        {
+            get { return _currentDateInfoTextView; }
+            set { _currentDateInfoTextView = value; }
+        }
+
+        public TextView CurrentWeatherInfoTextView
+        {
+            get { return _currentWeatherInfoTextView; }
+            set { _currentWeatherInfoTextView = value; }
+        }
+
+        public TextView CurrentCityInfoTextView
+        {
+            get { return _currentCityInfoTextView; }
+            set { _currentCityInfoTextView = value; }
+        }
+
+        public ImageView CurrentWeatherInfoImageView
+        {
+            get { return _currentWeatherInfoImageView; }
+            set { _currentWeatherInfoImageView = value; }
+        }
+
+        public TextView CurrentTempInfoTextView
+        {
+            get { return _currentTempInfoTextView; }
+            set { _currentTempInfoTextView = value; }
+        }
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -44,33 +84,8 @@ namespace AndroidWakeMeUp
             _currentTempInfoTextView = FindViewById<TextView>(Resource.Id.current_temp_info);
             _currentWeatherInfoImageView = FindViewById<ImageView>(Resource.Id.current_weather_img);
             UpdateTime();
-            GetWeatherInfo();
-        }
-
-        private async void GetWeatherInfo()
-        {
-            var response = ConnectPoint.HttpGetData(Content.waetherApiUrl);
-            var result = await response;
-            if (result.Key == HttpStatusCode.OK)
-            {
-                OpenWeather openWeather = JsonConvert.DeserializeObject<OpenWeather>(result.Value);
-                GetImageBitmapFromUrl(openWeather.weather[0].icon);
-                _currentWeatherInfoTextView.Text = openWeather.weather[0].description;
-                _currentCityInfoTextView.Text = openWeather.name;
-                _currentTempInfoTextView.Text = (openWeather.main.temp - 273.15) + "°C";
-            }
-        }
-
-        private async void GetImageBitmapFromUrl(string icon)
-        {
-            Bitmap bitmap = null;
-            var response = ConnectPoint.HttpGetImage(string.Format(Content.weatherIconUrl,icon));
-            var result = await response;
-            if (result.Key == HttpStatusCode.OK)
-            {
-                bitmap = BitmapFactory.DecodeByteArray(result.Value, 0, result.Value.Length);
-                _currentWeatherInfoImageView.SetImageBitmap(bitmap);
-            }
+            GetWeather getWeather = new GetWeather(this);
+            getWeather.Execute();
         }
 
         private async void UpdateTime()
@@ -92,6 +107,107 @@ namespace AndroidWakeMeUp
             _currentDateInfoTextView.Text = currentDate;
             _currentTimeAmpmInfoTextView.Text = currentAmpm;
             _currentTimeInfoTextView.Text = currentTime;
+        }   
+
+        private class GetWeather : AsyncTask<string, Java.Lang.Void, OpenWeather>
+        {
+            private ProgressDialog pd;
+            private TextView _currentWeatherInfoTextView;
+            private TextView _currentCityInfoTextView;
+            private TextView _currentTempInfoTextView;
+            private ImageView _currentWeatherInfoImageView;
+
+            public GetWeather(MainActivity activity)
+            {
+                pd = new ProgressDialog(activity);
+                _currentWeatherInfoTextView = activity.CurrentWeatherInfoTextView;
+                _currentCityInfoTextView = activity._currentCityInfoTextView;
+                _currentWeatherInfoImageView = activity._currentWeatherInfoImageView;
+                _currentTempInfoTextView = activity._currentTempInfoTextView;
+            }
+
+            protected override void OnPreExecute()
+            {
+                base.OnPreExecute();
+                pd.SetTitle("Loading weather info .....");
+                pd.Show();
+            }
+
+            protected override OpenWeather RunInBackground(params string[] @params)
+            {
+                string result = null;
+                try
+                {
+                    URL url = new URL(Content.waetherApiUrl);
+                    using (var urlConnection = (HttpURLConnection) url.OpenConnection())
+                    {
+                        if (urlConnection.ResponseCode == HttpStatus.Ok)
+                        {
+                            BufferedReader r = new BufferedReader(new InputStreamReader(urlConnection.InputStream));
+                            StringBuilder sb = new StringBuilder();
+                            string line;
+                            while ((line = r.ReadLine()) != null)
+                                sb.Append(line);
+                            result = sb.ToString();
+                            urlConnection.Disconnect();
+                        }
+                        else
+                        {
+                            result = null;
+                        }
+                    }
+                }
+                catch (Java.Lang.Exception e)
+                {
+                    result = null;
+                }
+                OpenWeather openWeather = JsonConvert.DeserializeObject<OpenWeather>((string)result);
+                GetImageBitmapFromUrl($"http://openweathermap.org/img/w/{openWeather.weather[0].icon}.png");
+                return openWeather;
+            }
+
+            protected override void OnPostExecute(OpenWeather openWeather)
+            {
+                base.OnPostExecute(openWeather);
+                if (openWeather != null)
+                {
+                    _currentWeatherInfoTextView.Text = openWeather.weather[0].description;
+                    _currentCityInfoTextView.Text = openWeather.name;
+                    _currentTempInfoTextView.Text = (openWeather.main.temp - 273.15) + "°C";
+                }
+                else
+                {
+                    _currentWeatherInfoTextView.Text = "Can't retrieve weather";
+                    _currentCityInfoTextView.Text = "----";
+                }
+
+                pd.Dismiss();
+            }
+
+            private async Task<Bitmap> GetImageBitmapFromUrl(string url)
+            {
+                WebClient webClient = new WebClient();
+                byte[] bytes = null;
+
+                try
+                {
+                    bytes = await webClient.DownloadDataTaskAsync(url);
+                }
+                catch (TaskCanceledException)
+                {
+                    // Exception
+                    return null;
+                }
+                catch (System.Exception e)
+                {
+                    // Exception
+                    return null;
+                }
+
+                Bitmap bitmap = BitmapFactory.DecodeByteArray(bytes, 0, bytes.Length);
+                _currentWeatherInfoImageView.SetImageBitmap(bitmap);
+                return bitmap;
+            }
         }
     }
 }
