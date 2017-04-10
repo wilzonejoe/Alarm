@@ -107,5 +107,11 @@
   <ItemGroup>
     <Content Include="Entitlements.plist" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CoreWakeMeUp\CoreWakeMeUp.csproj">
+      <Project>{dc32ddbc-f12c-4683-b69e-3808dda47be3}</Project>
+      <Name>CoreWakeMeUp</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
