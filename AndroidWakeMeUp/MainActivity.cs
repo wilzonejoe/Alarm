@@ -107,8 +107,8 @@ namespace AndroidWakeMeUp
         private void LoadData()
         {
             _listSource = _db.selectTableTime();
-            var adapter = new ListViewAdapter(this, _listSource);
-            _listData.Adapter = adapter;
+            //var adapter = new ListViewAdapter(this, _listSource);
+            //_listData.Adapter = adapter;
         }
     }
 }
