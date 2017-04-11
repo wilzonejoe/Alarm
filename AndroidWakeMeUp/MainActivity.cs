@@ -6,7 +6,6 @@ using Android.App;
 using Android.Graphics;
 using Android.Widget;
 using Android.OS;
-//using Android.Support.V7.Widget;
 using AndroidWakeMeUp.Resources.database;
 using CoreWakeMeUp.Configurations;
 using CoreWakeMeUp.Endpoint;
@@ -25,7 +24,7 @@ namespace AndroidWakeMeUp
         private TextView _currentTempInfoTextView;
         private TextView _currentCityInfoTextView;
         private ImageView _currentWeatherInfoImageView;
-        //private RecyclerView _listData;
+        private ListView _listData;
         private List<Time> _listSource;
         private DataBase _db;
 
@@ -45,10 +44,21 @@ namespace AndroidWakeMeUp
             _currentCityInfoTextView = FindViewById<TextView>(Resource.Id.current_city_name);
             _currentTempInfoTextView = FindViewById<TextView>(Resource.Id.current_temp_info);
             _currentWeatherInfoImageView = FindViewById<ImageView>(Resource.Id.current_weather_img);
-            //_listData = FindViewById<RecyclerView>(Resource.Id.activityList);
+            _listData = FindViewById<ListView>(Resource.Id.activityList);
             _listSource = new List<Time>();
             UpdateTime();
             GetWeatherInfo();
+            startDB();
+            DateTime nowTime = DateTime.Now;
+            Time time = new Time()
+            {
+                   Hour = nowTime.Hour,
+                   Minute = nowTime.Minute,
+                   Second = nowTime.Second
+            };
+
+            _db.insertIntoTableTime(time);
+            LoadData();
         }
 
         private void startDB()
@@ -63,11 +73,11 @@ namespace AndroidWakeMeUp
             var result = await response;
             if (result.Key == HttpStatusCode.OK)
             {
-                //OpenWeather openWeather = JsonConvert.DeserializeObject<OpenWeather>(result.Value);
-                //GetImageBitmapFromUrl(openWeather.weather[0].icon);
-                //_currentWeatherInfoTextView.Text = openWeather.weather[0].description;
-                //_currentCityInfoTextView.Text = openWeather.name;
-                //_currentTempInfoTextView.Text = (openWeather.main.temp - 273.15) + "°C";
+                OpenWeather openWeather = JsonConvert.DeserializeObject<OpenWeather>(result.Value);
+                GetImageBitmapFromUrl(openWeather.weather[0].icon);
+                _currentWeatherInfoTextView.Text = openWeather.weather[0].description;
+                _currentCityInfoTextView.Text = openWeather.name;
+                _currentTempInfoTextView.Text = (openWeather.main.temp - 273.15) + "°C";
             }
         }
 
@@ -107,8 +117,7 @@ namespace AndroidWakeMeUp
         private void LoadData()
         {
             _listSource = _db.selectTableTime();
-            //var adapter = new ListViewAdapter(this, _listSource);
-            //_listData.Adapter = adapter;
+            _listData.Adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleListItem1, _listSource);
         }
     }
 }
