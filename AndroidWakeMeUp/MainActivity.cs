@@ -1,17 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Graphics;
 using Android.Widget;
 using Android.OS;
+using Android.Support.V7.Widget;
+using AndroidWakeMeUp.Resources.database;
 using CoreWakeMeUp.Configurations;
 using CoreWakeMeUp.Endpoint;
 using CoreWakeMeUp.Entity;
-using Java.IO;
-using Java.Lang;
-using Java.Net;
 using Newtonsoft.Json;
 
 namespace AndroidWakeMeUp
@@ -26,6 +25,9 @@ namespace AndroidWakeMeUp
         private TextView _currentTempInfoTextView;
         private TextView _currentCityInfoTextView;
         private ImageView _currentWeatherInfoImageView;
+        private RecyclerView _listData;
+        private List<Time> _listSource;
+        private DataBase _db;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -43,8 +45,16 @@ namespace AndroidWakeMeUp
             _currentCityInfoTextView = FindViewById<TextView>(Resource.Id.current_city_name);
             _currentTempInfoTextView = FindViewById<TextView>(Resource.Id.current_temp_info);
             _currentWeatherInfoImageView = FindViewById<ImageView>(Resource.Id.current_weather_img);
+            _listData = FindViewById<RecyclerView>(Resource.Id.activityList);
+            _listSource = new List<Time>();
             UpdateTime();
             GetWeatherInfo();
+        }
+
+        private void startDB()
+        {
+            _db = new DataBase();
+            _db.createDataBase();
         }
 
         private async void GetWeatherInfo()
@@ -92,6 +102,13 @@ namespace AndroidWakeMeUp
             _currentDateInfoTextView.Text = currentDate;
             _currentTimeAmpmInfoTextView.Text = currentAmpm;
             _currentTimeInfoTextView.Text = currentTime;
+        }
+
+        private void LoadData()
+        {
+            _listSource = _db.selectTableTime();
+            var adapter = new ListViewAdapter(this, _listSource);
+            _listData.Adapter = adapter;
         }
     }
 }

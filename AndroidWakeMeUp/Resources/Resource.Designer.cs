@@ -190,11 +190,17 @@ namespace AndroidWakeMeUp
 			// aapt resource value: 0x7f080001
 			public const int normal = 2131230721;
 			
-			// aapt resource value: 0x7f08000b
-			public const int toolbar = 2131230731;
+			// aapt resource value: 0x7f08000d
+			public const int toolbar = 2131230733;
 			
 			// aapt resource value: 0x7f080002
 			public const int topbar = 2131230722;
+			
+			// aapt resource value: 0x7f08000b
+			public const int txtTime = 2131230731;
+			
+			// aapt resource value: 0x7f08000c
+			public const int txtTitle = 2131230732;
 			
 			static Id()
 			{
@@ -213,7 +219,10 @@ namespace AndroidWakeMeUp
 			public const int Main = 2130903040;
 			
 			// aapt resource value: 0x7f030001
-			public const int Toolbar = 2130903041;
+			public const int TimeItemLayout = 2130903041;
+			
+			// aapt resource value: 0x7f030002
+			public const int Toolbar = 2130903042;
 			
 			static Layout()
 			{

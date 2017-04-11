@@ -71,11 +71,11 @@
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
-    <ListView
-        android:id="@+id/activityList"
-        android:layout_below="@id/topbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/activityList"
+    android:scrollbars="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" />
 <!--    <com.refractored.fab.FloatingActionButton-->
 <!--        android:id="@+id/fab"-->
 <!--        android:layout_width="wrap_content"-->
