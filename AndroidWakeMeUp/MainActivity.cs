@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Android.App;
+using Android.Content;
 using Android.Graphics;
+using Android.Locations;
 using Android.Widget;
 using Android.OS;
 using CoreWakeMeUp.Configurations;
@@ -48,20 +50,21 @@ namespace AndroidWakeMeUp
             _listSource = new List<Time>();
             UpdateTime();
             GetWeatherInfo();
-            startDB();
+            StartDb();
+            //testing database
             DateTime nowTime = DateTime.Now;
             Time time = new Time()
             {
-                   Hour = nowTime.Hour,
-                   Minute = nowTime.Minute,
-                   Second = nowTime.Second
+                Hour = nowTime.Hour,
+                Minute = nowTime.Minute,
+                Second = nowTime.Second
             };
 
             _db.insertIntoTableTime(time);
-            LoadData();
+            RefreshListData();
         }
 
-        private void startDB()
+        private void StartDb()
         {
             _db = new DataBase(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal));
             _db.createDataBase();
@@ -69,7 +72,10 @@ namespace AndroidWakeMeUp
 
         private async void GetWeatherInfo()
         {
-            var response = ConnectPoint.HttpGetData(Content.waetherApiUrl);
+            KeyValuePair<double, double> locationCoordinate = GetLocationData();
+            string url = string.Format(Content.weatherApiUrlCoordinate, locationCoordinate.Key,
+                locationCoordinate.Value);
+            var response = ConnectPoint.HttpGetData(Content.weatherApiUrl);
             var result = await response;
             if (result.Key == HttpStatusCode.OK)
             {
@@ -100,11 +106,11 @@ namespace AndroidWakeMeUp
                 await Task.Delay(1000);
                 DateTime nowDateTime = DateTime.Now;
 
-                RunOnUiThread(() => updateInfoText(DateTime.Now));
+                RunOnUiThread(() => UpdateInfoText(DateTime.Now));
             }
         }
 
-        private void updateInfoText(DateTime nowDateTime)
+        private void UpdateInfoText(DateTime nowDateTime)
         {
             string currentTime = nowDateTime.ToString("hh:mm:ss");
             string currentAmpm = nowDateTime.ToString("tt");
@@ -114,10 +120,34 @@ namespace AndroidWakeMeUp
             _currentTimeInfoTextView.Text = currentTime;
         }
 
-        private void LoadData()
+        private void RefreshListData()
         {
             _listSource = _db.selectTableTime();
             _listData.Adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleListItem1, _listSource);
+        }
+
+        private KeyValuePair<double, double> GetLocationData()
+        {
+            LocationManager lm = (LocationManager) GetSystemService(Context.LocationService);
+            Location location;
+            bool gpsEnabled = lm.IsProviderEnabled(LocationManager.GpsProvider);
+            bool networkEnabled = lm.IsProviderEnabled(LocationManager.NetworkProvider);
+            if (gpsEnabled)
+                location = lm.GetLastKnownLocation(LocationManager.GpsProvider);
+            else if (networkEnabled)
+                location = lm.GetLastKnownLocation(LocationManager.NetworkProvider);
+            else
+                location = null;
+            if (location != null)
+            {
+                KeyValuePair<double, double> locationCoordinate =
+                    new KeyValuePair<double, double>(location.Latitude, location.Longitude);
+                return locationCoordinate;
+            }
+            else
+            {
+                return new KeyValuePair<double, double>();
+            }
         }
     }
 }
