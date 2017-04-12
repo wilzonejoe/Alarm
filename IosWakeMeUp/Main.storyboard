@@ -7,37 +7,94 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MainViewController" customModuleProvider="" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0°C" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="38" translatesAutoresizingMaskIntoConstraints="NO">
+                                <rect key="frame" x="358" y="35" width="42" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES" text="12:00:00">
-                                <rect key="frame" x="11" y="44" width="128" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <rect key="frame" x="20" y="36" width="114" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="am" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
-                                <rect key="frame" x="156" y="44" width="42" height="21"/>
+                                <rect key="frame" x="142" y="44" width="24" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES" text="01-01-2017">
-                                <rect key="frame" x="20" y="73" width="139" height="21"/>
+                                <rect key="frame" x="20" y="73" width="88" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="38"/>
+                                <exclude reference="4"/>
+                                <exclude reference="6"/>
+                                <exclude reference="7"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="50"/>
+                                <exclude reference="51"/>
+                                <exclude reference="85"/>
+                                <exclude reference="86"/>
+                                <exclude reference="90"/>
+                                <exclude reference="91"/>
+                                <exclude reference="92"/>
+                                <exclude reference="93"/>
+                                <exclude reference="94"/>
+                                <exclude reference="95"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="38"/>
+                                <include reference="4"/>
+                                <include reference="6"/>
+                                <include reference="7"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="50"/>
+                                <include reference="51"/>
+                                <include reference="85"/>
+                                <include reference="86"/>
+                                <include reference="90"/>
+                                <include reference="91"/>
+                                <include reference="92"/>
+                                <include reference="93"/>
+                                <include reference="94"/>
+                                <include reference="95"/>
+                            </mask>
+                        </variation>
+                        <constraints>
+                            <constraint id="85" firstItem="4" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="16"/>
+                            <constraint id="86" firstItem="4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20"/>
+                            <constraint id="90" firstItem="7" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20"/>
+                            <constraint id="91" firstItem="7" firstAttribute="top" secondItem="4" secondAttribute="bottom" constant="3"/>
+                            <constraint id="92" firstItem="6" firstAttribute="leading" secondItem="4" secondAttribute="trailing" constant="8"/>
+                            <constraint id="93" firstItem="6" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="24"/>
+                            <constraint id="94" firstItem="8bC-Xf-vdC" firstAttribute="trailing" secondItem="38" secondAttribute="trailing" constant="14"/>
+                            <constraint id="95" firstItem="38" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="15"/>
+                        </constraints>
                     </view>
                     <connections>
+                        <outlet property="current_temperature" destination="38" id="name-outlet-38"/>
                         <outlet property="current_time_info" destination="4" id="name-outlet-4"/>
                         <outlet property="current_am_pm_info" destination="6" id="name-outlet-6"/>
                         <outlet property="current_date_info" destination="7" id="name-outlet-7"/>
@@ -48,4 +105,8 @@
             <point key="canvasLocation" x="0.0" y="0.0"/>
         </scene>
     </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedScreenMetrics key="destination" type="retina47"/>
+        <simulatedOrientationMetrics key="orientation"/>
+    </simulatedMetricsContainer>
 </document>

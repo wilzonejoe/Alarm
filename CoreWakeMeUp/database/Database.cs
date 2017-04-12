@@ -1,14 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Android.Util;
 using CoreWakeMeUp.Entity;
 using SQLite;
 
-namespace AndroidWakeMeUp.Resources.database
+namespace CoreWakeMeUp.database
 {
     public class DataBase
     {
-        string folder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+        public string folder { get; set; }
+
+        public DataBase(string folder)
+        {
+            this.folder = folder;
+        }
+
         public bool createDataBase()
         {
             try
@@ -21,7 +26,6 @@ namespace AndroidWakeMeUp.Resources.database
             }
             catch (SQLiteException ex)
             {
-                Log.Info("SQLiteEx", ex.Message);
                 return false;
             }
         }
@@ -38,7 +42,6 @@ namespace AndroidWakeMeUp.Resources.database
             }
             catch (SQLiteException ex)
             {
-                Log.Info("SQLiteEx", ex.Message);
                 return false;
             }
         }
@@ -55,7 +58,6 @@ namespace AndroidWakeMeUp.Resources.database
             }
             catch (SQLiteException ex)
             {
-                Log.Info("SQLiteEx", ex.Message);
                 return null;
             }
         }
@@ -72,7 +74,6 @@ namespace AndroidWakeMeUp.Resources.database
             }
             catch (SQLiteException ex)
             {
-                Log.Info("SQLiteEx", ex.Message);
                 return false;
             }
         }
@@ -89,7 +90,6 @@ namespace AndroidWakeMeUp.Resources.database
             }
             catch (SQLiteException ex)
             {
-                Log.Info("SQLiteEx", ex.Message);
                 return false;
             }
         }
@@ -106,7 +106,6 @@ namespace AndroidWakeMeUp.Resources.database
             }
             catch (SQLiteException ex)
             {
-                Log.Info("SQLiteEx", ex.Message);
                 return false;
             }
         }

@@ -6,8 +6,8 @@ using Android.App;
 using Android.Graphics;
 using Android.Widget;
 using Android.OS;
-using AndroidWakeMeUp.Resources.database;
 using CoreWakeMeUp.Configurations;
+using CoreWakeMeUp.database;
 using CoreWakeMeUp.Endpoint;
 using CoreWakeMeUp.Entity;
 using Newtonsoft.Json;
@@ -63,7 +63,7 @@ namespace AndroidWakeMeUp
 
         private void startDB()
         {
-            _db = new DataBase();
+            _db = new DataBase(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal));
             _db.createDataBase();
         }
 

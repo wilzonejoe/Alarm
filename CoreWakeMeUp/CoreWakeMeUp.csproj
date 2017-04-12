@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Configurations\Content.cs" />
     <Compile Include="Configurations\ErrorMessage.cs" />
+    <Compile Include="database\Database.cs" />
     <Compile Include="Endpoint\ConnectPoint.cs" />
     <Compile Include="Entity\Time.cs" />
     <Compile Include="Entity\OpenWeather.cs" />
