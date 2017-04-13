@@ -20,6 +20,10 @@ namespace IosWakeMeUp
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel current_city { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel current_date_info { get; set; }
 
         [Outlet]
@@ -30,11 +34,24 @@ namespace IosWakeMeUp
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel current_time_info { get; set; }
 
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel current_weather_info { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIImageView weather_icon { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
             if (current_am_pm_info != null) {
                 current_am_pm_info.Dispose ();
                 current_am_pm_info = null;
+            }
+
+            if (current_city != null) {
+                current_city.Dispose ();
+                current_city = null;
             }
 
             if (current_date_info != null) {
@@ -50,6 +67,16 @@ namespace IosWakeMeUp
             if (current_time_info != null) {
                 current_time_info.Dispose ();
                 current_time_info = null;
+            }
+
+            if (current_weather_info != null) {
+                current_weather_info.Dispose ();
+                current_weather_info = null;
+            }
+
+            if (weather_icon != null) {
+                weather_icon.Dispose ();
+                weather_icon = null;
             }
         }
     }

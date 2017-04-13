@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Threading.Tasks;
+using CoreWakeMeUp.Configurations;
 using CoreWakeMeUp.database;
+using CoreWakeMeUp.Endpoint;
 using CoreWakeMeUp.Entity;
+using Foundation;
+using Newtonsoft.Json;
 using SQLite;
 using UIKit;
 
@@ -30,6 +36,7 @@ namespace IosWakeMeUp
             };
             _db.insertIntoTableTime(time);
             FillInTable();
+            GetWeatherInfo();
         }
 
         public async void UpdateClock()
@@ -73,9 +80,36 @@ namespace IosWakeMeUp
                 timeString.Add(time.ToString());
             }
             table.Source =  new TableSource(timeString.ToArray());
-            
+
         }
-        
+
+        private async void GetWeatherInfo()
+        {
+            string url = Content.weatherApiUrl;
+            var response = ConnectPoint.HttpGetData(Content.weatherApiUrl);
+            var result = await response;
+            if (result.Key == HttpStatusCode.OK)
+            {
+                OpenWeather openWeather = JsonConvert.DeserializeObject<OpenWeather>(result.Value);
+                GetImageBitmapFromUrl(openWeather.weather[0].icon);
+                current_weather_info.Text = openWeather.weather[0].description;
+                current_city.Text = openWeather.name;
+                current_temperature.Text = (openWeather.main.temp - 273.15) + "°C";
+            }
+        }
+
+        private async void GetImageBitmapFromUrl(string icon)
+        {
+            var response = ConnectPoint.HttpGetImage(string.Format(Content.weatherIconUrl, icon));
+            var result = await response;
+            if (result.Key == HttpStatusCode.OK)
+            {
+                var data = NSData.FromArray(result.Value);
+                var uiimage = UIImage.LoadFromData(data);
+                weather_icon.Image = uiimage;
+            }
+        }
+
 
         public override void DidReceiveMemoryWarning()
         {
