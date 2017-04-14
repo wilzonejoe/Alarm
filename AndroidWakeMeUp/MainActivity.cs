@@ -17,6 +17,8 @@ using Newtonsoft.Json;
 namespace AndroidWakeMeUp
 {
     [Activity(Label = "AndroidWakeMeUp", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/MyTheme")]
+
+    //develop branch
     public class MainActivity : Activity
     {
         private TextView _currentTimeInfoTextView;
