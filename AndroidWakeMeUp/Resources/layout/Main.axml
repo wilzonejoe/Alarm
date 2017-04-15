@@ -1,108 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+  <android.support.v7.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/appbar_height"
+    android:minHeight="@dimen/appbar_height"
+    app:theme="@style/MyTheme">
+    <TextView
+      android:id="@+id/activity_title"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textSize="8pt"
+      android:textStyle="bold"
+      android:text="Wake Me Up" />
+  </android.support.v7.widget.Toolbar>
+  <android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+      <RelativeLayout
+        android:id="@+id/topbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:background="@color/primary"
-        app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <RelativeLayout
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+        <LinearLayout
+          android:layout_alignParentLeft="true"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:gravity="left">
+          <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <RelativeLayout
-                android:id="@+id/topbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp">
-                <LinearLayout
-                    android:layout_alignParentLeft="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="left">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="left">
-                        <TextView
-                            android:id="@+id/current_time_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="00:00:00"
-                            android:textSize="14pt" />
-                        <TextView
-                            android:id="@+id/current_time_am_pm_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="5pt"
-                            android:text="AM" />
-                    </LinearLayout>
-                    <TextView
-                        android:id="@+id/current_date_info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="January 01,2017"
-                        android:textSize="7pt" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_alignParentRight="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="right">
-                    <ImageView
-                        android:id="@+id/current_weather_img"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp" />
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="right">
-                        <TextView
-                            android:id="@+id/current_temp_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0°C"
-                            android:textSize="9pt" />
-                        <TextView
-                            android:id="@+id/current_weather_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="sunny" />
-                        <TextView
-                            android:id="@+id/current_city_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="auckland" />
-                    </LinearLayout>
-                </LinearLayout>
-            </RelativeLayout>
-            <ListView
-                android:id="@+id/activityList"
-                android:layout_below="@id/topbar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="0.0dp" />
-        </RelativeLayout>
-        <ListView
-            android:id="@+id/left_drawer"
-            android:layout_width="240dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:choiceMode="singleChoice"
-            android:divider="#818181"
-            android:dividerHeight="1dp"
-            android:background="#E3F2FD" />
-    </android.support.v4.widget.DrawerLayout>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="left">
+            <TextView
+              android:id="@+id/current_time_info"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="00:00:00"
+              android:textSize="12pt" />
+            <TextView
+              android:id="@+id/current_time_am_pm_info"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textSize="5pt"
+              android:text="AM" />
+          </LinearLayout>
+          <TextView
+            android:id="@+id/current_date_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="January 01,2017"
+            android:textSize="7pt" />
+        </LinearLayout>
+        <LinearLayout
+          android:layout_alignParentRight="true"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:gravity="right">
+          <ImageView
+            android:id="@+id/current_weather_img"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+          <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="right">
+            <TextView
+              android:id="@+id/current_temp_info"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="0°C"
+              android:textSize="9pt" />
+            <TextView
+              android:id="@+id/current_weather_info"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="sunny"
+              android:textSize="5pt" />
+            <TextView
+              android:id="@+id/current_city_name"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="auckland"
+              android:textSize="5pt" />
+          </LinearLayout>
+        </LinearLayout>
+      </RelativeLayout>
+      <ListView
+        android:id="@+id/activityList"
+        android:layout_below="@id/topbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0.0dp" />
+    </RelativeLayout>
+    <ListView
+      android:id="@+id/left_drawer"
+      android:layout_width="180dp"
+      android:layout_height="match_parent"
+      android:layout_gravity="start"
+      android:choiceMode="singleChoice"
+      android:divider="#818181"
+      android:dividerHeight="1dp"
+      android:background="#E3F2FD" />
+  </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

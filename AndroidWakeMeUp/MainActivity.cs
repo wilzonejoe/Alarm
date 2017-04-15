@@ -21,7 +21,7 @@ using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace AndroidWakeMeUp
 {
-    [Activity(Label = "Wake Me Up", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/MyTheme")]
+    [Activity(Label = "", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/MyTheme")]
 
     //develop branch
     public class MainActivity : AppCompatActivity
