@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-    <string name="Hello">Hello World, Click Me!</string>
-    <string name="ApplicationName">AndroidWakeMeUp</string>
+  <string name="Hello">Hello World, Click Me!</string>
+  <string name="ApplicationName">Wake Me Up</string>
+  <string name="openDrawer">Menu</string>
 </resources>
