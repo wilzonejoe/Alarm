@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CoreWakeMeUp.Configurations;
 using CoreWakeMeUp.Entity;
 using SQLite;
 
@@ -7,18 +8,18 @@ namespace CoreWakeMeUp.database
 {
     public class DataBase
     {
-        public string folder { get; set; }
+        public string Directory { get; set; }
 
-        public DataBase(string folder)
+        public DataBase(string directory)
         {
-            this.folder = folder;
+            this.Directory = directory;
         }
 
-        public bool createDataBase()
+        public bool CreateDataBase()
         {
             try
             {
-                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "Times.db")))
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(Directory, Content.dbName)))
                 {
                     connection.CreateTable<Time>();
                     return true;
@@ -26,31 +27,33 @@ namespace CoreWakeMeUp.database
             }
             catch (SQLiteException ex)
             {
+                System.Diagnostics.Debug.WriteLine(ex);
                 return false;
             }
         }
 
-        public bool insertIntoTableTime(Time Time)
+        public bool InsertIntoTableTime(Time time)
         {
             try
             {
-                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "Times.db")))
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(Directory, Content.dbName)))
                 {
-                    connection.Insert(Time);
+                    connection.Insert(time);
                     return true;
                 }
             }
             catch (SQLiteException ex)
             {
+                System.Diagnostics.Debug.WriteLine(ex);
                 return false;
             }
         }
 
-        public List<Time> selectTableTime()
+        public List<Time> SelectTableTime()
         {
             try
             {
-                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "Times.db")))
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(Directory, Content.dbName)))
                 {
                     return connection.Table<Time>().ToList();
 
@@ -58,31 +61,33 @@ namespace CoreWakeMeUp.database
             }
             catch (SQLiteException ex)
             {
+                System.Diagnostics.Debug.WriteLine(ex);
                 return null;
             }
         }
 
-        public bool updateTableTime(Time Time)
+        public bool UpdateTableTime(Time time)
         {
             try
             {
-                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "Times.db")))
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(Directory, Content.dbName)))
                 {
-                    connection.Query<Time>("UPDATE Time set Hour=?,Minute=?,Second=? Where ID=?", Time.Hour, Time.Minute, Time.Second, Time.ID);
+                    connection.Query<Time>("UPDATE Time set Hour=?,Minute=?,Second=? Where ID=?", time.Hour, time.Minute, time.Second, time.ID);
                     return true;
                 }
             }
             catch (SQLiteException ex)
             {
+                System.Diagnostics.Debug.WriteLine(ex);
                 return false;
             }
         }
 
-        public bool deleteTableTime(Time Time)
+        public bool DeleteTableTime(Time Time)
         {
             try
             {
-                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "Times.db")))
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(Directory, Content.dbName)))
                 {
                     connection.Delete(Time);
                     return true;
@@ -90,22 +95,24 @@ namespace CoreWakeMeUp.database
             }
             catch (SQLiteException ex)
             {
+                System.Diagnostics.Debug.WriteLine(ex);
                 return false;
             }
         }
 
-        public bool selectQueryTableTime(int Id)
+        public bool SelectQueryTableTime(int id)
         {
             try
             {
-                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "Times.db")))
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(Directory, Content.dbName)))
                 {
-                    connection.Query<Time>("SELECT * FROM Time Where ID=?", Id);
+                    connection.Query<Time>("SELECT * FROM Time Where ID=?", id);
                     return true;
                 }
             }
             catch (SQLiteException ex)
             {
+                System.Diagnostics.Debug.WriteLine(ex);
                 return false;
             }
         }
