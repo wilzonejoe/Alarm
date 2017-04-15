@@ -26,7 +26,7 @@ namespace IosWakeMeUp
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
             UpdateClock();
-            StartDb();
+            startDB();
             DateTime dateTime = DateTime.Now;
             Time time = new Time()
             {
@@ -34,7 +34,7 @@ namespace IosWakeMeUp
                 Minute = dateTime.Minute,
                 Second = dateTime.Second
             };
-            _db.InsertIntoTableTime(time);
+            _db.insertIntoTableTime(time);
             FillInTable();
             GetWeatherInfo();
         }
@@ -59,10 +59,10 @@ namespace IosWakeMeUp
                 }
             });
         }
-        private void StartDb()
+        private void startDB()
         {
             _db = new DataBase(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal));
-            _db.CreateDataBase();
+            _db.createDataBase();
         }
 
         public void FillInTable()
@@ -73,7 +73,7 @@ namespace IosWakeMeUp
                 Frame = new CoreGraphics.CGRect(0,100,View.Bounds.Width,View.Bounds.Height)
             };
             View.AddSubview(table);
-            var times = _db.SelectTableTime();
+            var times = _db.selectTableTime();
             List<string>timeString  = new List<string>();
             foreach (var time in times)
             {

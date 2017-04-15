@@ -8,23 +8,16 @@ using Android.Graphics;
 using Android.Locations;
 using Android.Widget;
 using Android.OS;
-using Android.Support.V4.Widget;
-using Android.Support.V7.App;
-using Android.Views;
-using AndroidWakeMeUp.CustomObject;
 using CoreWakeMeUp.Configurations;
 using CoreWakeMeUp.database;
 using CoreWakeMeUp.Endpoint;
 using CoreWakeMeUp.Entity;
 using Newtonsoft.Json;
-using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace AndroidWakeMeUp
 {
-    [Activity(Label = "Wake Me Up", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/MyTheme")]
-
-    //develop branch
-    public class MainActivity : AppCompatActivity
+    [Activity(Label = "AndroidWakeMeUp", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/MyTheme")]
+    public class MainActivity : Activity
     {
         private TextView _currentTimeInfoTextView;
         private TextView _currentTimeAmpmInfoTextView;
@@ -37,45 +30,10 @@ namespace AndroidWakeMeUp
         private List<Time> _listSource;
         private DataBase _db;
 
-        //drawer elements
-        private Toolbar _mToolbar;
-        private MyActionBarDrawerToggle _mDrawerToggle;
-        private DrawerLayout _mDrawerLayout;
-        private ListView _mLeftDrawer;
-        private ArrayAdapter _mLeftAdapter;
-        private List<string> _mLeftDataSet;
-
-
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Main);
-
-            _mToolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
-            _mDrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
-            _mLeftDrawer = FindViewById<ListView>(Resource.Id.left_drawer);
-
-            _mLeftDrawer.Tag = 0;
-
-            SetSupportActionBar(_mToolbar);
-            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
-            SupportActionBar.SetHomeButtonEnabled(true);
-
-            _mLeftDataSet = new List<string> {"Left Item 1", "Left Item 2"};
-            _mLeftAdapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, _mLeftDataSet);
-            _mLeftDrawer.Adapter = _mLeftAdapter;
-
-            _mDrawerToggle = new MyActionBarDrawerToggle(
-                this,                           //Host Activity
-                _mDrawerLayout,                  //DrawerLayout
-                Resource.String.openDrawer,     //Opened Message
-                Resource.String.ApplicationName     //Closed Message
-            );
-
-            _mDrawerLayout.AddDrawerListener(_mDrawerToggle);
-
-            _mDrawerToggle.SyncState();
-
             Init();
         }
 
@@ -102,14 +60,14 @@ namespace AndroidWakeMeUp
                 Second = nowTime.Second
             };
 
-            _db.InsertIntoTableTime(time);
+            _db.insertIntoTableTime(time);
             RefreshListData();
         }
 
         private void StartDb()
         {
             _db = new DataBase(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal));
-            _db.CreateDataBase();
+            _db.createDataBase();
         }
 
         private async void GetWeatherInfo()
@@ -164,7 +122,7 @@ namespace AndroidWakeMeUp
 
         private void RefreshListData()
         {
-            _listSource = _db.SelectTableTime();
+            _listSource = _db.selectTableTime();
             _listData.Adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleListItem1, _listSource);
         }
 
@@ -190,34 +148,6 @@ namespace AndroidWakeMeUp
             {
                 return new KeyValuePair<double, double>();
             }
-        }
-
-        public override bool OnOptionsItemSelected(IMenuItem item)
-        {
-            switch (item.ItemId)
-            {
-                case Android.Resource.Id.Home:
-                    _mDrawerToggle.OnOptionsItemSelected(item);
-                    return true;
-                default:
-                    return base.OnOptionsItemSelected(item);
-            }
-        }
-        public override bool OnCreateOptionsMenu(IMenu menu)
-        {
-            MenuInflater.Inflate(Resource.Menu.action_menu, menu);
-            return base.OnCreateOptionsMenu(menu);
-        }
-        protected override void OnPostCreate(Bundle savedInstanceState)
-        {
-            base.OnPostCreate(savedInstanceState);
-            _mDrawerToggle.SyncState();
-        }
-
-        public override void OnConfigurationChanged(Android.Content.Res.Configuration newConfig)
-        {
-            base.OnConfigurationChanged(newConfig);
-            _mDrawerToggle.OnConfigurationChanged(newConfig);
         }
     }
 }
