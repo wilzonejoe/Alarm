@@ -159,9 +159,6 @@
   <ItemGroup>
     <AndroidResource Include="Resources\values\dimen.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\ActivityItem.xml" />
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
