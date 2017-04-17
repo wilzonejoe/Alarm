@@ -16,7 +16,7 @@ namespace IosWakeMeUp
 {
     public partial class MainViewController : UIViewController
     {
-        private DataBase _db;
+        private TimeController _db;
         public MainViewController (IntPtr handle) : base (handle)
         {
         }
@@ -34,7 +34,7 @@ namespace IosWakeMeUp
                 Minute = dateTime.Minute,
                 Second = dateTime.Second
             };
-            _db.InsertIntoTableTime(time);
+            _db.InsertItemIntoTable(time);
             FillInTable();
             GetWeatherInfo();
         }
@@ -61,8 +61,8 @@ namespace IosWakeMeUp
         }
         private void StartDb()
         {
-            _db = new DataBase(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal));
-            _db.CreateDataBase();
+            _db = TimeController.Instance(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal));
+            _db.CreateDataBase<Time>();
         }
 
         public void FillInTable()
@@ -73,7 +73,7 @@ namespace IosWakeMeUp
                 Frame = new CoreGraphics.CGRect(0,100,View.Bounds.Width,View.Bounds.Height)
             };
             View.AddSubview(table);
-            var times = _db.SelectTableTime();
+            var times = _db.SelectAllTime();
             List<string>timeString  = new List<string>();
             foreach (var time in times)
             {

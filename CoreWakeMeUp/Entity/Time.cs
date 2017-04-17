@@ -1,14 +1,14 @@
 ﻿using System.Text;
 using CoreWakeMeUp.Configurations;
 using CoreWakeMeUp.Enumeration;
-using SQLite;
 
 namespace CoreWakeMeUp.Entity
 {
-    public class Time
+    public class Time : SaveAbleObject
     {
-        [PrimaryKey, AutoIncrement]
-        public int ID { get; set; }
+        public Time()
+        {
+        }
 
         public int Hour { get; set; }
 

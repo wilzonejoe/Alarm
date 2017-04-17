@@ -10,6 +10,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/appbar_height"
     android:minHeight="@dimen/appbar_height"
+    android:background="@color/primary"
     app:theme="@style/MyTheme">
     <TextView
       android:id="@+id/activity_title"
@@ -17,6 +18,7 @@
       android:layout_height="wrap_content"
       android:textSize="8pt"
       android:textStyle="bold"
+      android:textColor="@android:color/white"
       android:text="Wake Me Up" />
   </android.support.v7.widget.Toolbar>
   <android.support.v4.widget.DrawerLayout
@@ -27,11 +29,11 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent">
       <RelativeLayout
+        android:background="@color/primary"
         android:id="@+id/topbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:padding="20dp">
         <LinearLayout
           android:layout_alignParentLeft="true"
           android:layout_width="match_parent"
@@ -67,36 +69,39 @@
           android:layout_alignParentRight="true"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:orientation="horizontal"
+          android:orientation="vertical"
           android:gravity="right">
-          <ImageView
-            android:id="@+id/current_weather_img"
-            android:layout_width="60dp"
-            android:layout_height="60dp" />
+
           <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:gravity="right">
+            <ImageView
+              android:id="@+id/current_weather_img"
+              android:layout_width="30dp"
+              android:layout_height="30dp" />
             <TextView
               android:id="@+id/current_temp_info"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="0°C"
               android:textSize="9pt" />
-            <TextView
-              android:id="@+id/current_weather_info"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="sunny"
-              android:textSize="5pt" />
-            <TextView
-              android:id="@+id/current_city_name"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="auckland"
-              android:textSize="5pt" />
+
           </LinearLayout>
+          <TextView
+            android:id="@+id/current_weather_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sunny"
+            android:textSize="5pt" />
+          <TextView
+            android:id="@+id/current_city_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="auckland"
+            android:textSize="5pt" />
+
         </LinearLayout>
       </RelativeLayout>
       <ListView
@@ -114,6 +119,6 @@
       android:choiceMode="singleChoice"
       android:divider="#818181"
       android:dividerHeight="1dp"
-      android:background="#E3F2FD" />
+      android:background="#666666" />
   </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

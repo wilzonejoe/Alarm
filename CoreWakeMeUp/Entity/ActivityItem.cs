@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace CoreWakeMeUp.Entity
 {
-    abstract public class ActivityItem
+    public abstract class ActivityItem : SaveAbleObject
     {
-        abstract public int ItemId { get; set; }
-        abstract public int DayId { get; set; }
-        abstract public int StepId { get; set; }
-        abstract public Time Timespan { get; set; }
-        abstract public int TimeOffset { get; set; }
+        public int DayId { get; set; }
+        public int StepId { get; set; }
+        public Time Timespan { get; set; }
+        public int TimeOffset { get; set; }
     }
 }

@@ -12,6 +12,7 @@ using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Views;
 using AndroidWakeMeUp.CustomObject;
+using CoreWakeMeUp;
 using CoreWakeMeUp.Configurations;
 using CoreWakeMeUp.database;
 using CoreWakeMeUp.Endpoint;
@@ -35,10 +36,13 @@ namespace AndroidWakeMeUp
         private ImageView _currentWeatherInfoImageView;
         private ListView _listData;
         private List<Time> _listSource;
-        private DataBase _db;
+        private TimeController _db;
+
+//        private Button click;
 
         //drawer elements
         private Toolbar _mToolbar;
+
         private MyActionBarDrawerToggle _mDrawerToggle;
         private DrawerLayout _mDrawerLayout;
         private ListView _mLeftDrawer;
@@ -66,10 +70,10 @@ namespace AndroidWakeMeUp
             _mLeftDrawer.Adapter = _mLeftAdapter;
 
             _mDrawerToggle = new MyActionBarDrawerToggle(
-                this,                           //Host Activity
-                _mDrawerLayout,                  //DrawerLayout
-                Resource.String.openDrawer,     //Opened Message
-                Resource.String.ApplicationName     //Closed Message
+                this, //Host Activity
+                _mDrawerLayout, //DrawerLayout
+                Resource.String.openDrawer, //Opened Message
+                Resource.String.ApplicationName //Closed Message
             );
 
             _mDrawerLayout.AddDrawerListener(_mDrawerToggle);
@@ -88,6 +92,19 @@ namespace AndroidWakeMeUp
             _currentCityInfoTextView = FindViewById<TextView>(Resource.Id.current_city_name);
             _currentTempInfoTextView = FindViewById<TextView>(Resource.Id.current_temp_info);
             _currentWeatherInfoImageView = FindViewById<ImageView>(Resource.Id.current_weather_img);
+//            click = FindViewById<Button>(Resource.Id.button);
+//
+//            click.Click += delegate
+//            {
+//                Intent alarmIntent = new Intent(this, typeof(AlarmReceiver));
+//                PendingIntent pendingIntent = PendingIntent.GetBroadcast(this, 0, alarmIntent, 0);
+            // dateOffset instantiate
+//                AlarmManager manager = (AlarmManager)GetSystemService(Context.AlarmService);
+//                manager.SetAlarmClock(new AlarmManager.AlarmClockInfo(triggerOffset.ToUnixTimeMilliseconds(), pendingIntent),pendingIntent);
+//                Console.WriteLine(manager.NextAlarmClock.TriggerTime);
+//            };
+
+
             _listData = FindViewById<ListView>(Resource.Id.activityList);
             _listSource = new List<Time>();
             UpdateTime();
@@ -102,14 +119,14 @@ namespace AndroidWakeMeUp
                 Second = nowTime.Second
             };
 
-            _db.InsertIntoTableTime(time);
+            _db.InsertItemIntoTable(time);
             RefreshListData();
         }
 
         private void StartDb()
         {
-            _db = new DataBase(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal));
-            _db.CreateDataBase();
+            _db = TimeController.Instance(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal));
+            _db.CreateDataBase<Time>();
         }
 
         private async void GetWeatherInfo()
@@ -117,7 +134,8 @@ namespace AndroidWakeMeUp
             KeyValuePair<double, double> locationCoordinate = GetLocationData();
             string url = string.Format(Content.weatherApiUrlCoordinate, locationCoordinate.Key,
                 locationCoordinate.Value);
-            var response = ConnectPoint.HttpGetData(Content.weatherApiUrl);
+            Console.WriteLine(url);
+            var response = ConnectPoint.HttpGetData(url);
             var result = await response;
             if (result.Key == HttpStatusCode.OK)
             {
@@ -146,7 +164,6 @@ namespace AndroidWakeMeUp
             while (true)
             {
                 await Task.Delay(1000);
-                DateTime nowDateTime = DateTime.Now;
 
                 RunOnUiThread(() => UpdateInfoText(DateTime.Now));
             }
@@ -164,7 +181,7 @@ namespace AndroidWakeMeUp
 
         private void RefreshListData()
         {
-            _listSource = _db.SelectTableTime();
+            _listSource = _db.SelectAllTime();
             _listData.Adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleListItem1, _listSource);
         }
 
@@ -188,7 +205,7 @@ namespace AndroidWakeMeUp
             }
             else
             {
-                return new KeyValuePair<double, double>();
+                return new KeyValuePair<double, double>(-36.848461, 174.7633);
             }
         }
 
@@ -199,15 +216,21 @@ namespace AndroidWakeMeUp
                 case Android.Resource.Id.Home:
                     _mDrawerToggle.OnOptionsItemSelected(item);
                     return true;
+                case Resource.Id.create_edit_activity:
+                    Intent intent = new Intent(this, typeof(CreateEditActivityItem));
+                    StartActivity(intent);
+                    return true;
                 default:
                     return base.OnOptionsItemSelected(item);
             }
         }
+
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.action_menu, menu);
             return base.OnCreateOptionsMenu(menu);
         }
+
         protected override void OnPostCreate(Bundle savedInstanceState)
         {
             base.OnPostCreate(savedInstanceState);

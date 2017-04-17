@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using CoreWakeMeUp.Entity;
 
 namespace CoreWakeMeUp.database
 {
@@ -12,51 +14,34 @@ namespace CoreWakeMeUp.database
   * functions 
   */
 
-    // import sql controller here
-
     public class UserController
     {
-        private static UserController Instance;
+        private static UserController _instance;
 
-        private UserController() { }
+        private UserController()
+        {
+        }
 
-//        public static UserController Instance
-//        {
-//            get
-//            {
-//                if (Instance == null)
-//                {
-//                    Instance = new Singleton();
-//                }
-//                return Instance;
-//            }
-//        }
+        public static UserController Instance()
+        {
+            if (_instance == null)
+                _instance = new UserController();
+            return _instance;
+        }
+
+
         public bool RegisterUser(string username, string password)
         {
-            bool success = false;
-            //  get new user commend
-
-            // call sql database controller class try catch
-
-            // catch
-
-            // return result
+            var success = false;
+            //function to register a consumer
             return success;
         }
 
-        public bool EditUser()
+        public bool EditUser(User user)
         {
-            bool success = false;
-            //  get new user commend
-
-            // call sql database controller class try catch
-
-            // catch
-
-            // return result
+            var success = false;
+            //function to update consumer
             return success;
         }
-
-
     }
 }
