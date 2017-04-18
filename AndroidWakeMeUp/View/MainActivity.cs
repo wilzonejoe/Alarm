@@ -5,14 +5,13 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
-using Android.Locations;
-using Android.Widget;
 using Android.OS;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Views;
-using AndroidWakeMeUp.CustomObject;
-using CoreWakeMeUp;
+using Android.Widget;
+using AndroidWakeMeUp.CustomUtils;
+using AndroidWakeMeUp.CustomUtils.ViewRelated;
 using CoreWakeMeUp.Configurations;
 using CoreWakeMeUp.database;
 using CoreWakeMeUp.Endpoint;
@@ -20,11 +19,10 @@ using CoreWakeMeUp.Entity;
 using Newtonsoft.Json;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 
-namespace AndroidWakeMeUp
+namespace AndroidWakeMeUp.View
 {
     [Activity(Label = "", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/MyTheme")]
 
-    //develop branch
     public class MainActivity : AppCompatActivity
     {
         private TextView _currentTimeInfoTextView;
@@ -37,8 +35,6 @@ namespace AndroidWakeMeUp
         private ListView _listData;
         private List<Time> _listSource;
         private TimeController _db;
-
-//        private Button click;
 
         //drawer elements
         private Toolbar _mToolbar;
@@ -92,18 +88,6 @@ namespace AndroidWakeMeUp
             _currentCityInfoTextView = FindViewById<TextView>(Resource.Id.current_city_name);
             _currentTempInfoTextView = FindViewById<TextView>(Resource.Id.current_temp_info);
             _currentWeatherInfoImageView = FindViewById<ImageView>(Resource.Id.current_weather_img);
-//            click = FindViewById<Button>(Resource.Id.button);
-//
-//            click.Click += delegate
-//            {
-//                Intent alarmIntent = new Intent(this, typeof(AlarmReceiver));
-//                PendingIntent pendingIntent = PendingIntent.GetBroadcast(this, 0, alarmIntent, 0);
-            // dateOffset instantiate
-//                AlarmManager manager = (AlarmManager)GetSystemService(Context.AlarmService);
-//                manager.SetAlarmClock(new AlarmManager.AlarmClockInfo(triggerOffset.ToUnixTimeMilliseconds(), pendingIntent),pendingIntent);
-//                Console.WriteLine(manager.NextAlarmClock.TriggerTime);
-//            };
-
 
             _listData = FindViewById<ListView>(Resource.Id.activityList);
             _listSource = new List<Time>();
@@ -131,7 +115,7 @@ namespace AndroidWakeMeUp
 
         private async void GetWeatherInfo()
         {
-            KeyValuePair<double, double> locationCoordinate = GetLocationData();
+            KeyValuePair<double, double> locationCoordinate = LocationFinder.GetLocationData(this);
             string url = string.Format(Content.weatherApiUrlCoordinate, locationCoordinate.Key,
                 locationCoordinate.Value);
             Console.WriteLine(url);
@@ -185,29 +169,7 @@ namespace AndroidWakeMeUp
             _listData.Adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleListItem1, _listSource);
         }
 
-        private KeyValuePair<double, double> GetLocationData()
-        {
-            LocationManager lm = (LocationManager) GetSystemService(Context.LocationService);
-            Location location;
-            bool gpsEnabled = lm.IsProviderEnabled(LocationManager.GpsProvider);
-            bool networkEnabled = lm.IsProviderEnabled(LocationManager.NetworkProvider);
-            if (gpsEnabled)
-                location = lm.GetLastKnownLocation(LocationManager.GpsProvider);
-            else if (networkEnabled)
-                location = lm.GetLastKnownLocation(LocationManager.NetworkProvider);
-            else
-                location = null;
-            if (location != null)
-            {
-                KeyValuePair<double, double> locationCoordinate =
-                    new KeyValuePair<double, double>(location.Latitude, location.Longitude);
-                return locationCoordinate;
-            }
-            else
-            {
-                return new KeyValuePair<double, double>(-36.848461, 174.7633);
-            }
-        }
+        
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
@@ -219,6 +181,7 @@ namespace AndroidWakeMeUp
                 case Resource.Id.create_edit_activity:
                     Intent intent = new Intent(this, typeof(CreateEditActivityItem));
                     StartActivity(intent);
+                    Finish();
                     return true;
                 default:
                     return base.OnOptionsItemSelected(item);

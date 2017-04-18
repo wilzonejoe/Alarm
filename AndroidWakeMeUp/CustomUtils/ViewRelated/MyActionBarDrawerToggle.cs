@@ -3,7 +3,7 @@ using Android.Support.V7.App;
 using Android.Widget;
 using SupportActionBarDrawerToggle = Android.Support.V7.App.ActionBarDrawerToggle;
 
-namespace AndroidWakeMeUp.CustomObject
+namespace AndroidWakeMeUp.CustomUtils.ViewRelated
 {
     public class MyActionBarDrawerToggle : SupportActionBarDrawerToggle
     {

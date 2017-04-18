@@ -115,11 +115,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateEditActivityItem.cs" />
-    <Compile Include="CustomObject\AlarmReceiver.cs" />
-    <Compile Include="CustomObject\DeviceBootReceiver.cs" />
-    <Compile Include="CustomObject\MyActionBarDrawerToggle.cs" />
-    <Compile Include="MainActivity.cs" />
+    <Compile Include="CustomUtils\LocationFinder.cs" />
+    <Compile Include="View\CreateEditActivityItem.cs" />
+    <Compile Include="CustomUtils\BroadcastReceiver\AlarmReceiver.cs" />
+    <Compile Include="CustomUtils\BroadcastReceiver\DeviceBootReceiver.cs" />
+    <Compile Include="CustomUtils\ViewRelated\MyActionBarDrawerToggle.cs" />
+    <Compile Include="View\MainActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
   </ItemGroup>
@@ -162,7 +163,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\menu\action_menu.xml" />
+    <AndroidResource Include="Resources\menu\action_menu.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\dimen.xml" />

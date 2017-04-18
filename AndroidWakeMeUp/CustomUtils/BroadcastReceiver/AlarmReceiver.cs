@@ -1,13 +1,12 @@
 ﻿using System;
 using Android.App;
 using Android.Content;
-using Android.Widget;
 
-namespace AndroidWakeMeUp.CustomObject
+namespace AndroidWakeMeUp.CustomUtils.BroadcastReceiver
 {
     [BroadcastReceiver]
     [IntentFilter(new[] { Intent.ActionBootCompleted })]
-    public class AlarmReceiver : BroadcastReceiver
+    public class AlarmReceiver : Android.Content.BroadcastReceiver
     {
         public override void OnReceive(Context context, Intent intent)
         {

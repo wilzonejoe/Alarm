@@ -52,6 +52,7 @@
     <Compile Include="Entity\OpenWeather.cs" />
     <Compile Include="Entity\TravelActivityItem.cs" />
     <Compile Include="Entity\User.cs" />
+    <Compile Include="Enumeration\ActivityType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Enumeration\TimeType.cs" />
     <Compile Include="Utils.cs" />
