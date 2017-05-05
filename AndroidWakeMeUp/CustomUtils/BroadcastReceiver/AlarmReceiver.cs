@@ -13,15 +13,11 @@ namespace AndroidWakeMeUp.CustomUtils.BroadcastReceiver
     {
         public override void OnReceive(Context context, Intent intent)
         {
-            RemoteViews customNotifView = new RemoteViews(context.PackageName,
-            Resource.Layout.NotificationLayout);
-//            customNotifView.SetTextViewText(Resource.Id.text, "Hello World!");
-
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                .SetSmallIcon(Android.Resource.Drawable.AlertLightFrame);
-
-            // Build the notification:
-            Notification notification = builder.Build();
+            Notification notification = new Notification.Builder(context)
+                .SetContentTitle("Alarm is ringing")
+                .SetContentText("RING RING RING")
+                .SetSmallIcon(Resource.Drawable.Icon)
+                .Build();
 
             // Get the notification manager:
             NotificationManager notificationManager =(NotificationManager)
@@ -29,7 +25,7 @@ namespace AndroidWakeMeUp.CustomUtils.BroadcastReceiver
 
             // Publish the notification:
             const int notificationId = 0;
-            notification.ContentView = customNotifView;
+
             notificationManager.Notify(notificationId, notification);
         }
     }
