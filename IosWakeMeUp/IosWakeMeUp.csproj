@@ -96,6 +96,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="packages.config" />
     <Compile Include="Controllers\AlarmController.cs" />
+    <Compile Include="NowActivityViewController.cs" />
+    <Compile Include="NowActivityViewController.designer.cs">
+      <DependentUpon>NowActivityViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
@@ -138,6 +142,7 @@
     <Content Include="Entitlements.plist" />
     <AndroidResource Include="Resources\Icon.png" />
     <BundleResource Include="Icon.png" />
+    <BundleResource Include="spark.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CoreWakeMeUp\CoreWakeMeUp.csproj">

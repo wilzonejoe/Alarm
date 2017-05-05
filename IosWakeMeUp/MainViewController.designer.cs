@@ -1,4 +1,4 @@
-﻿// WARNING
+// WARNING
 //
 // This file has been generated automatically by Xamarin Studio from the outlets and
 // actions declared in your storyboard file.
@@ -40,7 +40,15 @@ namespace IosWakeMeUp
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        IosWakeMeUp.NowActivityViewController NowActivityViewController { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIImageView weather_icon { get; set; }
+
+        [Action ("UIButton137_TouchUpInside:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void UIButton137_TouchUpInside (UIKit.UIButton sender);
 
         void ReleaseDesignerOutlets ()
         {
@@ -72,6 +80,11 @@ namespace IosWakeMeUp
             if (current_weather_info != null) {
                 current_weather_info.Dispose ();
                 current_weather_info = null;
+            }
+
+            if (NowActivityViewController != null) {
+                NowActivityViewController.Dispose ();
+                NowActivityViewController = null;
             }
 
             if (weather_icon != null) {

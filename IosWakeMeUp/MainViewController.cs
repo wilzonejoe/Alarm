@@ -16,48 +16,34 @@ namespace IosWakeMeUp
 {
     public partial class MainViewController : UIViewController
     {
+		partial void UIButton137_TouchUpInside(UIButton sender)
+		{
+			Console.WriteLine("Touched button");
+		}
+
         private DataBase _db;
         public MainViewController (IntPtr handle) : base (handle)
         {
         }
 
         public override void ViewDidLoad()
-        {
+		{
             base.ViewDidLoad();
-			// create the notification
-			var notification = new UILocalNotification();
+			AlarmController.CreateAlarm(AlarmController.days.Monday, DateTime.Now);
 
-			// set the fire date (the date time in which it will fire)
-			notification.FireDate = NSDate.FromTimeIntervalSinceNow(10);
-
-			// configure the alert
-			notification.AlertAction = "View Alert";
-			notification.AlertBody = "Your 10 second alert has fired!";
-
-			// modify the badge
-			notification.ApplicationIconBadgeNumber = 1;
-
-			// set the sound to be the default sound
-			notification.SoundName = UILocalNotification.DefaultSoundName;
-
-			// schedule it
-			UIApplication.SharedApplication.ScheduleLocalNotification(notification);
-			Console.WriteLine("Scheduled...");
-
-
-            // Perform any additional setup after loading the view, typically from a nib.
-            UpdateClock();
-            startDB();
-            DateTime dateTime = DateTime.Now;
-            Time time = new Time()
-            {
-                Hour = dateTime.Hour,
-                Minute = dateTime.Minute,
-                Second = dateTime.Second
-            };
-            _db.insertIntoTableTime(time);
-            FillInTable();
-            GetWeatherInfo();
+            //// Perform any additional setup after loading the view, typically from a nib.
+            //UpdateClock();
+            //startDB();
+            //DateTime dateTime = DateTime.Now;
+            //Time time = new Time()
+            //{
+            //    Hour = dateTime.Hour,
+            //    Minute = dateTime.Minute,
+            //    Second = dateTime.Second
+            //};
+            //_db.insertIntoTableTime(time);
+            //FillInTable();
+            //GetWeatherInfo();
         }
 
         public async void UpdateClock()
@@ -88,19 +74,19 @@ namespace IosWakeMeUp
 
         public void FillInTable()
         {
-            UITableView table;
-            table = new UITableView()
-            {
-                Frame = new CoreGraphics.CGRect(0,100,View.Bounds.Width,View.Bounds.Height)
-            };
-            View.AddSubview(table);
-            var times = _db.selectTableTime();
-            List<string>timeString  = new List<string>();
-            foreach (var time in times)
-            {
-                timeString.Add(time.ToString());
-            }
-            table.Source =  new TableSource(timeString.ToArray());
+            //UITableView table;
+            //table = new UITableView()
+            //{
+            //    Frame = new CoreGraphics.CGRect(0,100,View.Bounds.Width,View.Bounds.Height)
+            //};
+            //View.AddSubview(table);
+            //var times = _db.selectTableTime();
+            //List<string>timeString  = new List<string>();
+            //foreach (var time in times)
+            //{
+            //    timeString.Add(time.ToString());
+            //}
+            //table.Source =  new TableSource(timeString.ToArray());
 
         }
 
