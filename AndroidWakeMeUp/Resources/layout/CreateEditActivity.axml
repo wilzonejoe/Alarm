@@ -1,13 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minWidth="25px"
     android:minHeight="25px">
-  <Spinner
-    android:id="@+id/activity_type_spinner"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:spinnerMode="dropdown" />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/appbar_height"
+        android:minHeight="@dimen/appbar_height"
+        android:background="@color/primary"
+        app:theme="@style/MyTheme">
+        <TextView
+            android:id="@+id/activity_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="8pt"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:text="Wake Me Up" />
+    </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/activity_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activity Type:" />
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/activity_type_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spinner_min_height"
+            android:spinnerMode="dropdown" />
+      <android.support.design.widget.TextInputLayout
+        android:id="@+id/lNameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fNameLayout"
+        android:layout_marginTop="10dp">
+        <EditText
+          android:id="@+id/ltitle"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="Title"/>
+      </android.support.design.widget.TextInputLayout>
+      <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content" 
+          android:text="Duration :"/>
+        <NumberPicker
+            android:id="@+id/numberPicker1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+      </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

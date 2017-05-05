@@ -18,13 +18,13 @@ namespace CoreWakeMeUp.database
             _directory = directory;
         }
 
-        public bool CreateDataBase<SaveAbleObject>()
+        public bool CreateDataBase<T>()
         {
             try
             {
-                using (var connection = new SQLiteConnection(System.IO.Path.Combine(_directory, Content.dbName)))
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(_directory, typeof(T).Name)))
                 {
-                    connection.CreateTable<SaveAbleObject>();
+                    connection.CreateTable<T>();
                     return true;
                 }
             }
@@ -35,11 +35,11 @@ namespace CoreWakeMeUp.database
             }
         }
 
-        public bool InsertItemIntoTable(SaveAbleObject obj)
+        public bool InsertItemIntoTable<T>(T obj)
         {
             try
             {
-                using (var connection = new SQLiteConnection(System.IO.Path.Combine(_directory, Content.dbName)))
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(_directory, typeof(T).Name)))
                 {
                     connection.Insert(obj);
                     return true;
@@ -52,11 +52,11 @@ namespace CoreWakeMeUp.database
             }
         }
 
-        public bool UpdateTableTime(SaveAbleObject obj)
+        public bool UpdateTableTime<T>(T obj)
         {
             try
             {
-                using (var connection = new SQLiteConnection(System.IO.Path.Combine(_directory, Content.dbName)))
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(_directory, typeof(T).Name)))
                 {
                     connection.Update(obj);
                     return true;
@@ -69,11 +69,11 @@ namespace CoreWakeMeUp.database
             }
         }
 
-        public bool DeleteTableTime(SaveAbleObject obj)
+        public bool DeleteTableTime<T>(T obj)
         {
             try
             {
-                using (var connection = new SQLiteConnection(System.IO.Path.Combine(_directory, Content.dbName)))
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(_directory, typeof(T).Name)))
                 {
                     connection.Delete(obj);
                     return true;

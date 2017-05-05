@@ -1,6 +1,9 @@
 ﻿using System;
 using Android.App;
 using Android.Content;
+using Android.Support.V4.App;
+using Android.Widget;
+using AndroidWakeMeUp.View;
 
 namespace AndroidWakeMeUp.CustomUtils.BroadcastReceiver
 {
@@ -10,20 +13,23 @@ namespace AndroidWakeMeUp.CustomUtils.BroadcastReceiver
     {
         public override void OnReceive(Context context, Intent intent)
         {
-            Notification.Builder builder = new Notification.Builder(context)
-                .SetContentTitle("Alarm notification")
-                .SetContentText("Alarm rings at " + DateTime.Now)
-                .SetSmallIcon(Resource.Drawable.Icon);
+            RemoteViews customNotifView = new RemoteViews(context.PackageName,
+            Resource.Layout.NotificationLayout);
+//            customNotifView.SetTextViewText(Resource.Id.text, "Hello World!");
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .SetSmallIcon(Android.Resource.Drawable.AlertLightFrame);
 
             // Build the notification:
             Notification notification = builder.Build();
 
             // Get the notification manager:
-            NotificationManager notificationManager =
-                context.GetSystemService(Context.NotificationService) as NotificationManager;
+            NotificationManager notificationManager =(NotificationManager)
+                context.GetSystemService(Context.NotificationService);
 
             // Publish the notification:
             const int notificationId = 0;
+            notification.ContentView = customNotifView;
             notificationManager.Notify(notificationId, notification);
         }
     }

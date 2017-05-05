@@ -8,9 +8,11 @@ using Android.Graphics;
 using Android.OS;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using AndroidWakeMeUp.CustomUtils;
+using AndroidWakeMeUp.CustomUtils.BroadcastReceiver;
 using AndroidWakeMeUp.CustomUtils.ViewRelated;
 using CoreWakeMeUp.Configurations;
 using CoreWakeMeUp.database;
@@ -32,9 +34,11 @@ namespace AndroidWakeMeUp.View
         private TextView _currentTempInfoTextView;
         private TextView _currentCityInfoTextView;
         private ImageView _currentWeatherInfoImageView;
-        private ListView _listData;
         private List<Time> _listSource;
         private TimeController _db;
+
+        private RecyclerView _mRecyclerView;
+        private RecyclerView.LayoutManager _mLayoutManager;
 
         //drawer elements
         private Toolbar _mToolbar;
@@ -88,9 +92,12 @@ namespace AndroidWakeMeUp.View
             _currentCityInfoTextView = FindViewById<TextView>(Resource.Id.current_city_name);
             _currentTempInfoTextView = FindViewById<TextView>(Resource.Id.current_temp_info);
             _currentWeatherInfoImageView = FindViewById<ImageView>(Resource.Id.current_weather_img);
-
-            _listData = FindViewById<ListView>(Resource.Id.activityList);
-            _listSource = new List<Time>();
+            _mRecyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
+            _mLayoutManager = new LinearLayoutManager(this);
+            _mRecyclerView.SetLayoutManager(_mLayoutManager);
+           
+            //            _listData = FindViewById<ListView>(Resource.Id.activityList);
+                        _listSource = new List<Time>();
             UpdateTime();
             GetWeatherInfo();
             StartDb();
@@ -105,6 +112,14 @@ namespace AndroidWakeMeUp.View
 
             _db.InsertItemIntoTable(time);
             RefreshListData();
+
+            Intent alarmIntent = new Intent(this, typeof(AlarmReceiver));
+            PendingIntent pendingIntent = PendingIntent.GetBroadcast(this, 0, alarmIntent, 0);
+            DateTime dateTime = DateTime.Now.AddSeconds(5);
+            DateTimeOffset triggerOffset = new DateTimeOffset(dateTime);
+            AlarmManager manager = (AlarmManager)GetSystemService(Context.AlarmService);
+            manager.SetAlarmClock(new AlarmManager.AlarmClockInfo(triggerOffset.ToUnixTimeMilliseconds(), pendingIntent), pendingIntent);
+            Console.WriteLine(manager.NextAlarmClock.TriggerTime);
         }
 
         private void StartDb()
@@ -124,21 +139,20 @@ namespace AndroidWakeMeUp.View
             if (result.Key == HttpStatusCode.OK)
             {
                 OpenWeather openWeather = JsonConvert.DeserializeObject<OpenWeather>(result.Value);
-                GetImageBitmapFromUrl(openWeather.weather[0].icon);
-                _currentWeatherInfoTextView.Text = openWeather.weather[0].description;
-                _currentCityInfoTextView.Text = openWeather.name;
-                _currentTempInfoTextView.Text = (openWeather.main.temp - 273.15) + "°C";
+                GetImageBitmapFromUrl(openWeather.Weather[0].Icon);
+                _currentWeatherInfoTextView.Text = openWeather.Weather[0].Description;
+                _currentCityInfoTextView.Text = openWeather.Name;
+                _currentTempInfoTextView.Text = Convert.ToInt32(openWeather.Main.Temp - 273.15) + "°C";
             }
         }
 
         private async void GetImageBitmapFromUrl(string icon)
         {
-            Bitmap bitmap = null;
             var response = ConnectPoint.HttpGetImage(string.Format(Content.weatherIconUrl, icon));
             var result = await response;
             if (result.Key == HttpStatusCode.OK)
             {
-                bitmap = BitmapFactory.DecodeByteArray(result.Value, 0, result.Value.Length);
+                var bitmap = BitmapFactory.DecodeByteArray(result.Value, 0, result.Value.Length);
                 _currentWeatherInfoImageView.SetImageBitmap(bitmap);
             }
         }
@@ -166,10 +180,13 @@ namespace AndroidWakeMeUp.View
         private void RefreshListData()
         {
             _listSource = _db.SelectAllTime();
-            _listData.Adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleListItem1, _listSource);
+            //            _listData.Adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleListItem1, _listSource);
+            ActivityItemAdapter mAdapter = new ActivityItemAdapter(_listSource);
+            _mRecyclerView.SetAdapter(mAdapter);
+
         }
 
-        
+
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
@@ -181,7 +198,7 @@ namespace AndroidWakeMeUp.View
                 case Resource.Id.create_edit_activity:
                     Intent intent = new Intent(this, typeof(CreateEditActivityItem));
                     StartActivity(intent);
-                    Finish();
+//                    Finish();
                     return true;
                 default:
                     return base.OnOptionsItemSelected(item);

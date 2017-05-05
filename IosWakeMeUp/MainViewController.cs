@@ -91,10 +91,10 @@ namespace IosWakeMeUp
             if (result.Key == HttpStatusCode.OK)
             {
                 OpenWeather openWeather = JsonConvert.DeserializeObject<OpenWeather>(result.Value);
-                GetImageBitmapFromUrl(openWeather.weather[0].icon);
-                current_weather_info.Text = openWeather.weather[0].description;
-                current_city.Text = openWeather.name;
-                current_temperature.Text = (openWeather.main.temp - 273.15) + "°C";
+                GetImageBitmapFromUrl(openWeather.Weather[0].Icon);
+                current_weather_info.Text = openWeather.Weather[0].Description;
+                current_city.Text = openWeather.Name;
+                current_temperature.Text = (openWeather.Main.Temp - 273.15) + "°C";
             }
         }
 

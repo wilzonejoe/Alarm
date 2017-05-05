@@ -26,7 +26,7 @@ namespace AndroidWakeMeUp.CustomUtils
             else
             {
                 //auckland coordinate
-                return new KeyValuePair<double, double>(-36.848461, 174.7633);
+                return new KeyValuePair<double, double>(38.9072, -77.0369);
             }
         }
     }
